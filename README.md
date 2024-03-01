@@ -1,2 +1,2 @@
 # flaskApi
-Api Flask MySql 
+Api Flask MySql para cadastro e manipulação de produtos.
