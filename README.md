@@ -6,12 +6,19 @@ Setup:
 2. Na pasta raiz do repositorio, build a imagem do banco de dados MYSQL  
   ex(Windows): docker build -t flask_api_db .  
 3. Rode o container com o comando abaixo, 3 produtos serão criados como exemplo  
-  ex(Windows): docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=RootPassword -e MYSQL_DATABASE=FlaskApiDb -e MYSQL_USER=MyUser -e MYSQL_PASSWORD=MainPassword flask_api_db  
-4. Rode o app  
+  ex(Windows): docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=**RootPassword** -e MYSQL_DATABASE=FlaskApiDb -e MYSQL_USER=**MyUser** -e MYSQL_PASSWORD=**MainPassword** flask_api_db  
+  substitua:  
+    **RootPassword** pelo password root desejado  
+    **MyUser** pelo usuario principal desejado   
+    **MainPassword** pelo password desejado  
+  Anote esses valores.  
+4. No arquivo .env da raiz do projeto use os valores anotados para preencher os valores 
+5. Rode o app  
   ex(Windows): python -m main  
-5. O framework irá servir o app na url:  
-  http://127.0.0.1:5000/
-
+6. O framework irá servir o app na url:  
+  http://127.0.0.1:5000/  
+OBS:: No Linux rode o docker com sudo  
+  
 Utilização:  
 1. O site apresenta 4 campos.  
 -- Uma lista com todos os produtos do bd  

@@ -1,10 +1,11 @@
 import mysql.connector
 from models import Product
+from decouple import config
 
 mydb = mysql.connector.connect(
     host='localhost',
-    user='MyUser',
-    password='MainPassword',
+    user=config('MYSQL_USER',default='MyUser'),
+    password=config('MYSQL_PASSWORD', default='MainPassword'),
     database='FlaskApiDb'
 )
 
