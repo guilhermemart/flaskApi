@@ -1,6 +1,4 @@
-from flask import Flask, make_response, request
-import mysql.connector
-import service, server
+import server
 
 app = server.setup_router()
 

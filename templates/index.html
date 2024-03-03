@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Simple webcommerce controller</title>
+  </head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1>
+					Controlador de WebCommerce Simples
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>
+						Produtos registrados
+					</h3>
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>
+									Id
+								</th>
+								<th>
+									Nome
+								</th>
+								<th>
+									Descricao
+								</th>
+								<th>
+									Preco
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for item in context %}
+							<tr>
+								<td>
+									{{item.id}}
+								</td>
+								<td>
+									{{item.name}}
+								</td>
+								<td>
+									{{item.description}}
+								</td>
+								<td>
+									{{item.price}}
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>
+						Criar novo produto
+					</h3>
+					<form role="form">
+						<div class="form-group">
+
+							<label for="inputName">
+								Nome do Produto
+							</label>
+							<input type="text" class="form-control" id="inputName" />
+						</div>
+						<div class="form-group">
+
+							<label for="inputDescription">
+								Descricao
+							</label>
+							<input type="text" class="form-control" id="inputDescription" />
+						</div>
+						<div class="form-group">
+
+							<label for="inputPrice">
+								Preco
+							</label>
+							<input type="number" class="form-control" id="inputPrice" />
+						</div>
+						<button type="button" onclick="createProduct()" class="btn btn-primary">
+							Criar
+						</button>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>
+						Editar produto
+					</h3>
+					<form role="form">
+						<div class="form-group">
+
+							<label for="idToEdit">
+								Id a editar
+							</label>
+							<input type="number" class="form-control" id="idToEdit" />
+						</div>
+						<div class="form-group">
+
+							<label for="updateName">
+								Novo nome
+							</label>
+							<input type="text" class="form-control" id="updateName" />
+						</div>
+						<div class="form-group">
+
+							<label for="updateDescription">
+								Nova Descricao
+							</label>
+							<input type="text" class="form-control" id="updateDescription" />
+						</div>
+						<div class="form-group">
+
+							<label for="updatePreco">
+								Novo Preco
+							</label>
+							<input type="number" class="form-control" id="updatePreco" />
+						</div>
+						<button type="button" onclick="updateProduct()" class="btn btn-primary">
+							Atualizar
+						</button>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>
+						Excluir produto
+					</h3>
+					<form role="form">
+						<div class="form-group">
+
+							<label for="excludeId">
+								Id para excluir
+							</label>
+							<input type="number" class="form-control" id="excludeId" />
+						</div>
+						<button type="button" onclick="excludeProduct()" class="btn btn-primary">
+							Excluir
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function updateProduct() {
+        const idProduto = document.getElementById('idToEdit').value;
+        const name = document.getElementById('updateName').value;
+        const description = document.getElementById('updateDescription').value;
+        const price = document.getElementById('updatePreco').value;
+        const product = {
+            id: idProduto,
+            name: name,
+            description: description,
+            price: price
+        };
+        const jsonProduto = JSON.stringify(product);
+
+        // Envia o JSON para o servidor
+        let url = "http://127.0.0.1:5000/product/" + idProduto;
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonProduto
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+        });
+    }
+
+
+	function createProduct() {
+        const name = document.getElementById('inputName').value;
+        const description = document.getElementById('inputDescription').value;
+        const price = document.getElementById('inputPrice').value;
+        const product = {
+            id: 0,
+            name: name,
+            description: description,
+            price: price
+        };
+        const jsonProduct = JSON.stringify(product);
+
+        // Envia o JSON para o servidor
+        let url = "http://127.0.0.1:5000/product";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonProduct
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+        });
+    }
+
+
+	function excludeProduct() {
+        const excludeId = document.getElementById('excludeId').value;
+
+        // Envia o JSON para o servidor
+        let url = "http://127.0.0.1:5000/product/" + excludeId;
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+        });
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

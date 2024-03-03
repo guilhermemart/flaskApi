@@ -11,7 +11,7 @@ mydb = mysql.connector.connect(
 
 def get_all():
     cursor = mydb.cursor()
-    query = "SELECT id, name, brand, description, price FROM products"
+    query = "SELECT id, name, description, price FROM products"
     cursor.execute(query)
 
     return cursor.fetchall()
